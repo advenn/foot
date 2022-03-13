@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Games Room{% endblock %}
+
+{% block content %}
+    {% for game in games %}
+        <ul>
+            <li><label for="{{ game.home_team }}">{{ game.home_team }} <input type="text" name="{{ game.home_team }}" size="1"></label>
+            -
+        <label for="{{ game.away_team }}"><input type="text" name="{{ game.away_team }}" size="1"> {{ game.away_team }}</label></li>
+        </ul>
+    {% endfor %}
+    <input type="button" value="submit">
+{% endblock %}
+
+this is template
