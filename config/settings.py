@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-!=&r3ocumy752*cf_1&vvkaia71pe&5z@d^9%+$y0!0bz)9m^v
 DEBUG = True
 
 ALLOWED_HOSTS = []
-AUTH_USER_MODEL = 'match.User'
 
 # Application definition
 
@@ -37,9 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'match',
     'upcoming',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,3 +127,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'

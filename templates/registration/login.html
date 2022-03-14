@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block login %}
+     <h1>Login</h1>
+    <form action="{% url 'login' %}" method="post">
+    {{ form|crispy }}
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}" />
+    <input type="submit" value="Log-in" class="btn btn-primary mx-auto d-block px-3">
+    <p class="pt-2">Saytimizda yangimisiz? U holda <a href="{% url 'register' %}">bu yerda</a> ro'yxatdan o'ting</p>
+    </form>
+{% endblock %}

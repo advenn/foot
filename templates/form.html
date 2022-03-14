@@ -1,27 +1,27 @@
-{% extends 'base.html' %}
-
-{% block form %}
-
-<h2>Upcoming matches </h2>
-<form action="/predict/" method="post"> 
-    {% csrf_token %}
-    <ul> 
-{% for upc in upcoming %}
-
-<li>  <label for="UpcomingMatch_{{ upc.pk }}"> Match:
-    <label for="match_{{ upc.pk }}"> {{ upc.home_team }} 
-        <input id="match_{{ upc.pk }}" type="text" name="match_{{ upc.pk }}_h" size="1"></label> 
-        -
- <label for="match_{{ upc.pk }}">
-     <input id="match_{{ upc.pk }}" type="text" name="match_{{ upc.pk }}_a" size="1"> {{ upc.away_team }}
-     </label> </label> </li>
-    
-  Match will be held on {{ upc.matchdate }}<br>
-
-{% endfor %}
-</ul>
-<input type="submit" value="Submit">
-</form>
+{##}
+{#{% extends 'base.html' %}#}
+{##}
+{##}
+{#{% block form %}#}
+{##}
+{#<h2>Upcoming matches </h2>#}
+{#<form action="/predict/" method="post"> #}
+{#    {% csrf_token %}#}
+{#    <ul> #}
+{#{% for upc in upcoming %}#}
+{##}
+{#<li>  <label for="UpcomingMatch_{{ upc.pk }}"> Match:#}
+{#    <label for="match_{{ upc.pk }}"> {{ upc.home_team }} #}
+{#        <input id="match_{{ upc.pk }}" type="text" name="match_{{ upc.pk }}_h" size="1"></label> #}
+{#        -#}
+{# <label for="match_{{ upc.pk }}">#}
+{#     <input id="match_{{ upc.pk }}" type="text" name="match_{{ upc.pk }}_a" size="1"> {{ upc.away_team }}#}
+{#     </label> </label> </li>#}
+{##}
+{#{% endfor %}#}
+{#</ul>#}
+{#<input type="submit" value="Submit">#}
+{#</form>#}
 
 
 
