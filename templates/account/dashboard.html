@@ -18,8 +18,14 @@
 </ul>
 <input type="submit" value="Submit">
 </form>
-
-
-
-
 {% endblock form %}
+<br>
+{% block submitted %}
+<br>
+Siz quyidagi o'yinlar uchun o'z taxminlaringizni kiritgansiz!<br>
+Kiritgan taxminlaringizni o'zgartirmoqchimisiz?<br>
+Unda kerakli qatordagi <b>Match</b> so'ziga bosing!<br>
+{% for predict in submitted %}
+<a href="/edit/{{ predict.pk }}">Match</a>: {{ predict.match.home_team }} <code>{{ predict.home_score }}</code> - <code>{{ predict.away_score }}</code> {{ predict.match.away_team }}<br>
+{% endfor %}
+{% endblock submitted %}

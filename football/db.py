@@ -1,7 +1,8 @@
 import psycopg2
+import sqlite3
 
 class Database:
-    def __init__(self,path='football.db'):
+    def __init__(self, path='football.db'):
         self.path = path
         self.conn = sqlite3.connect(path)
         self.cursor = self.conn.cursor()
@@ -25,7 +26,6 @@ class Database:
         self.cursor.execute(sql)
 
 
-
 class Game:
     def __init__(self, home_team, away_team, home_score, away_score):
         self.home_team = home_team
@@ -36,6 +36,7 @@ class Game:
     def write(self):
         conn = sqlite3.connect('football.db')
         c = conn.cursor()
-        c.execute("INSERT INTO games VALUES (?, ?, ?, ?)", (self.home_team, self.away_team, self.home_score, self.away_score))
+        c.execute("INSERT INTO games VALUES (?, ?, ?, ?)",
+                  (self.home_team, self.away_team, self.home_score, self.away_score))
         conn.commit()
         conn.close()

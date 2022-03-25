@@ -1,5 +1,8 @@
 from django.contrib import admin
+
 from .models import *
+
+
 # Register your models here.
 
 
@@ -7,11 +10,23 @@ from .models import *
 class TourAdmin(admin.ModelAdmin):
     list_display = ['number', 'is_active', 'start_time', 'deadline']
 
+
 @admin.register(Predict)
 class PredictAdmin(admin.ModelAdmin):
-    list_display = ['match', 'home_score', 'away_score', 'date', 'user']
+    list_display = ['id', 'match', 'home_score', 'away_score', 'date', 'user']
     list_filter = ['user']
+
 
 @admin.register(UpcomingMatch)
 class UpcomingMatchAdmin(admin.ModelAdmin):
     list_display = ['home_team', 'away_team', 'tour']
+
+
+@admin.register(TrueScore)
+class TrueScoreAdmin(admin.ModelAdmin):
+    list_display = ['match', 'home_score', 'away_score', 'home_prop_score', 'away_prop_score']
+
+
+@admin.register(Rate)
+class RateAdmin(admin.ModelAdmin):
+    list_display = ['user', 'match', 'score']
