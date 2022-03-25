@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse
-from .models import UpcomingMatch, Predict, Tour
+from .models import UpcomingMatch, Predict, Tour, TrueScore, Rate
 from django.contrib.auth.decorators import login_required
 import pandas as pd
 from .forms import UserRegistrationForm
@@ -17,6 +17,7 @@ def register(request):
     else: 
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
+
 
 @login_required
 def main(request):
@@ -105,7 +106,8 @@ def predict_receive(request):
 
     return HttpResponse('Thanks')
 
- 
+
+@login_required
 def edit(request, predict_id):
     predict = Predict.objects.get(id=int(predict_id))
 
@@ -116,7 +118,7 @@ def edit(request, predict_id):
     }
     return render(request, 'account/edit_predict.html', context=context)
 
-
+@login_required
 def edit_predict(request):
     print(request.POST)
     user = request.user
@@ -132,8 +134,11 @@ def edit_predict(request):
 <t>    {home_team} {predict.home_score}:{predict.away_score} {away_team}</t>")
 
 
+@login_required
 def check_scores_after_match(request):
     user = request.user
+    if user.is_superuser:
+        finished_matches = TrueScore.objects.filter(match__n)
     predicts = Predict.objects.filter(user=user)
     for predict in predicts:
         if predict.match.is_finished:
