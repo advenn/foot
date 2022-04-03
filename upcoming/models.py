@@ -45,6 +45,7 @@ class TrueScore(models.Model):
     date = models.DateTimeField(null=True, auto_now_add=True)
     home_prop_score = models.IntegerField(blank=True, null=True)
     away_prop_score = models.IntegerField(blank=True, null=True)
+    is_counted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.match.home_team + f" {self.home_score}:{self.away_score} " + self.match.away_team

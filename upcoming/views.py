@@ -2,8 +2,10 @@ from django.shortcuts import render, HttpResponse
 from .models import UpcomingMatch, Predict, Tour, TrueScore, Rate
 from django.contrib.auth.decorators import login_required
 import pandas as pd
+import numpy as np
 from .forms import UserRegistrationForm
 import datetime
+from .utils import prop, check_scores_and_rate
 
 
 def register(request):
@@ -14,7 +16,7 @@ def register(request):
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
             return render(request, 'account/register_done.html', {'new_user': new_user})
-    else: 
+    else:
         user_form = UserRegistrationForm()
     return render(request, 'account/register.html', {'user_form': user_form})
 
@@ -45,7 +47,7 @@ def main(request):
             submitted.append(upc)
     # print(submitted, not_submitted, preds, predicts)        
     context = {
-        'title':'Taxmin qilish',
+        'title': 'Taxmin qilish',
         'upcoming': not_submitted,
         'submitted': preds,
     }
@@ -89,7 +91,7 @@ def predict_receive(request):
             value = None
         game = [match_id, state, value]
         games.append(game)
-    df = pd.DataFrame(games, columns=['match_id', 'state', 'score']) 
+    df = pd.DataFrame(games, columns=['match_id', 'state', 'score'])
     df.dropna(axis=0, how='any', inplace=True)
     uniques = df.match_id.unique()
     upcmatches = UpcomingMatch.objects.filter(id__in=uniques)
@@ -112,11 +114,12 @@ def edit(request, predict_id):
     predict = Predict.objects.get(id=int(predict_id))
 
     context = {
-        "user":request.user,
-        'title':'Taxminni tahrirlash',
+        "user": request.user,
+        'title': 'Taxminni tahrirlash',
         'predict': predict,
     }
     return render(request, 'account/edit_predict.html', context=context)
+
 
 @login_required
 def edit_predict(request):
@@ -136,9 +139,27 @@ def edit_predict(request):
 
 @login_required
 def check_scores_after_match(request):
-    user = request.user
-    if user.is_superuser:
-        finished_matches = TrueScore.objects.filter(match__n)
+    if request.user.is_superuser:
+        last_tour = Tour.objects.filter(is_active=False).last()
+        # finished_matches = Predict.objects.filter(match__tour=last_tour)
+        trues = TrueScore.objects.filter(match__tour=last_tour).\
+            values('match_id', 'home_score', 'away_score', 'home_prop_score', 'away_prop_score')
+
+        predicts = Predict.objects.filter(match__tour=last_tour).values('user', 'home_score', 'away_score')
+        results = [check_scores_and_rate(i) for i in trues]
+
+        preds = pd.DataFrame(data=predicts)
+        # df = pd.DataFrame(data=preds, columns=['home', 'away'])
+        new_arr = np.array([prop(np.array([x[2], x[3]])) for x in preds.itertuples()])
+        preds['prop_home'] = new_arr[:, 0]
+        preds['away_prop'] = new_arr[:, 1]
+        actual = trues
+        actual = np.array([3, 2])
+        proportion = actual - actual.min()
+        exact_match = preds[(preds.home == actual[0]) & (preds.away == actual[1])]
+        proportional_match = preds[(preds['prop_home'] == proportion[0]) & (preds['away_prop'] == proportion[1])]
+
+
     predicts = Predict.objects.filter(user=user)
     for predict in predicts:
         if predict.match.is_finished:
@@ -146,3 +167,9 @@ def check_scores_after_match(request):
             predict.away_score = predict.match.away_score
             predict.save()
     return HttpResponse('Thanks')
+
+
+@login_required
+def finished_games(request):
+    last_tour = Tour.objects.filter(is_active=False).last()
+    # finished_matches =
