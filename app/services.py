@@ -16,7 +16,7 @@ from core.events import ServicesRegistrationContext
 
 
 def configure_services(
-    configuration: Configuration,
+        configuration: Configuration,
 ) -> Tuple[Container, ServicesRegistrationContext, Configuration]:
     container = Container()
 

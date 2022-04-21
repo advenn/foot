@@ -4,9 +4,16 @@
 # thanks to `roconfiguration` package.
 # Refer to https://github.com/RobertoPrevato/roconfiguration for more information.
 #
-app_name: BlackSheep Empty Project Template
-github_url: https://github.com/RobertoPrevato/BlackSheepEmptyProject
+app_name: Predict football match results
+github_url: https://github.com/advenn/foot
 
 storage_connection_string: EXAMPLE
 
 show_error_details: true
+
+debug: true
+
+site:
+  title: Predict football match results
+  description: Predict football match results
+  copyright: Copyright (c) 2022 Nurmuhammad Advenn All rights reserved. 😂😂😂😂😂

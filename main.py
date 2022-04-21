@@ -10,7 +10,7 @@ from server import app
 # This is necessary for example, when data access layer and business logic
 # are configured before starting the application.
 # See https://github.com/encode/uvicorn/pull/446#issuecomment-540484961
-uvicorn.run(app, host='127.0.0.1', port=44777, log_level='info')
+uvicorn.run(app, host='127.0.0.1', port=44777, log_level='info', )
 
 
 # For example, import subclass Config to a class whose setup_event_loop does nothing.

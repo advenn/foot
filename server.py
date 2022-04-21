@@ -3,6 +3,8 @@
 To run with uvicorn cli, with hot reload:
     $ uvicorn server:app --port 44777 --reload --log-level info
 """
+import uvicorn
+
 try:
     import uvloop
 except ModuleNotFoundError:
@@ -17,3 +19,5 @@ if uvloop is not ...:
     uvloop.install()
 
 app = configure_application(*configure_services(load_configuration()))
+
+uvicorn.run(app,port=44777, log_level="info")

@@ -9,6 +9,11 @@ from .errors import configure_error_handlers
 from .routes import configure_routes
 
 
+async def before_start(application: Application) -> None:
+    application.services.add_instance(application)
+    application.services.add_alias("app", Application)
+
+
 def configure_application(
     services: Container,
     context: ServicesRegistrationContext,
@@ -20,6 +25,7 @@ def configure_application(
 
     configure_routes(app)
 
+    app.on_start += before_start
     app.on_start += context.initialize
     app.on_stop += context.dispose
 

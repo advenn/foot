@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from blacksheep import Request
 from guardpost import User
 from roconfiguration import Configuration
 
@@ -32,3 +33,12 @@ def configure_routes(app: Application) -> None:
         # Note how `Configuration` service is registered in `app.services.py`;
         # Refer to BlackSheep, and rodi documentation for more information
         return json({"app_name": conf.app_name, "github_url": conf.github_url})
+
+    @app.route("/ping")
+    async def ping() -> Response:
+        return text("pong")
+
+    # @app.route("/tour")
+    # async def tour_list(request) -> Response:
+    #     print(request)
+    #     return json({"message": "tour list"})
