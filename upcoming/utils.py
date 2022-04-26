@@ -70,19 +70,20 @@ def check_scores_and_rate(match_details: TrueScore):
         count = 0
         for predict in predicts:
             user, home, away = predict.user, predict.home_score, predict.away_score
-            try:
-                rate = Rate.objects.get(user=user)
-            except:
+            result = 0
+            if int(home) == int(home_score) and int(away) == int(away_score):
+                result = 2
+            elif home == home_score or away == away_score:
+                result = 1
+            else:
+                result = 0
+            if bool(result):
                 rate = Rate()
                 rate.user = user
-                rate.score = 0
-            if int(home) == int(home_score) and int(away) == int(away_score):
-                rate.score += 2
-            elif home == home_score or away == away_score:
-                rate.score += 1
-            else:
-                rate.score += 0
-            rate.save()
+                rate.score = int(result)
+                rate.match = match.match
+                rate.predict = predict
+                rate.save()
             count += 1
         match.is_counted = True
         match.save()

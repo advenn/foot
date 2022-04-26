@@ -55,8 +55,10 @@ class Rate(models.Model):
      if the proportional score is exact match we add 1 point to that user
      """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    match = models.ForeignKey(UpcomingMatch, on_delete=models.CASCADE, default=0)
+    predict = models.ForeignKey(Predict, on_delete=models.CASCADE, default=None, null=True)
     score = models.FloatField(blank=True, null=True)
     date = models.DateTimeField(null=True, auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} rate {self.match.home_score} vs {self.match.away_score} {self.score}"
+        return f"{self.user.username} has {self.score} balls "
