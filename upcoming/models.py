@@ -56,9 +56,8 @@ class Rate(models.Model):
      """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     match = models.ForeignKey(UpcomingMatch, on_delete=models.CASCADE, default=0)
-    predict = models.ForeignKey(Predict, on_delete=models.CASCADE, default=None, null=True)
     score = models.FloatField(blank=True, null=True)
     date = models.DateTimeField(null=True, auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} has {self.score} balls "
+        return f"{self.user.username} match {self.match.id}, earned {self.score} ball(s) "
