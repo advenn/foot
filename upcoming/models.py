@@ -39,12 +39,10 @@ class Predict(models.Model):
 
 class TrueScore(models.Model):
     """Create true score for upcoming match"""
-    match = models.ForeignKey(UpcomingMatch, on_delete=models.CASCADE, unique=True)
+    match = models.ForeignKey(UpcomingMatch, on_delete=models.CASCADE)
     home_score = models.IntegerField(blank=True, null=True)
     away_score = models.IntegerField(blank=True, null=True)
     date = models.DateTimeField(null=True, auto_now_add=True)
-    home_prop_score = models.IntegerField(blank=True, null=True)
-    away_prop_score = models.IntegerField(blank=True, null=True)
     is_counted = models.BooleanField(default=False)
 
     def __str__(self):
@@ -57,7 +55,6 @@ class Rate(models.Model):
      if the proportional score is exact match we add 1 point to that user
      """
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    match = models.ForeignKey(TrueScore, on_delete=models.CASCADE)
     score = models.FloatField(blank=True, null=True)
     date = models.DateTimeField(null=True, auto_now_add=True)
 

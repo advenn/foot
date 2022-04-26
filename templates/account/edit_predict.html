@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block edit %}
+    {% url 'dashboard' %}
+<!-- {{ predict.match.home_team }} - {{ predict.match.away_team }} -->
+<br><br>
+Welcome, {{ user.username }}!<br>
+<form method="post" action="/edit_predict/">
+    {% csrf_token %}
+    <input id="predict_{{ predict.pk }}" type="hidden" name="pk" value="{{ predict.pk }}">
+    <label for="match_{{ predict.pk }}"> {{ predict.match.home_team }}  
+    <input id="predict_{{ predict.pk }}"   type="text" name="home_team" value="{{ predict.home_score }}" size="1"></label>
+    -
+    <label for="match_{{ predict.pk }}">
+    <input id="predict_{{ predict.pk }}" type="text" name="away_team" value="{{ predict.away_score }}" size="1"> {{ predict.match.away_team }} </label><br>
+    <input type="submit" value="Submit">
+​
+<br><br>
+<!-- <form>
+{#<label for="UpcomingMatch_{{ predict.pk }}">#}
+{#    <label for="match_{{ predict.pk }}"> {{ predict.home_team }}#}
+{#        <input id="match_{{ predict.pk }}" type="text" name="match_{{ predict.pk }}_h" size="1"></label>#}
+{#        -#}
+{# <label for="match_{{ predict.pk }}">#}
+{#     <input id="match_{{ predict.pk }}" type="text" name="match_{{ predict.pk }}_a" size="1"> {{ predict.away_team }}#}
+{#     </label> </label> #}
+{#     <input type="submit" value="Submit">#}
+{#    </form> -->#}
+{% endblock edit %}

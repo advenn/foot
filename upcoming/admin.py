@@ -24,9 +24,9 @@ class UpcomingMatchAdmin(admin.ModelAdmin):
 
 @admin.register(TrueScore)
 class TrueScoreAdmin(admin.ModelAdmin):
-    list_display = ['match', 'home_score', 'away_score', 'home_prop_score', 'away_prop_score']
+    list_display = ['match', 'home_score', 'away_score']
 
 
 @admin.register(Rate)
 class RateAdmin(admin.ModelAdmin):
-    list_display = ['user', 'match', 'score']
+    list_display = ['user', 'score']

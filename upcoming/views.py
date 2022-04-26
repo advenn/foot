@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 from .forms import UserRegistrationForm
 import datetime
-from .utils import prop, check_scores_and_rate
+from .utils import prop, check_scores_and_rate, bot, LOG_GROUP_ID
+
 
 
 def register(request):
@@ -137,39 +138,48 @@ def edit_predict(request):
 <t>    {home_team} {predict.home_score}:{predict.away_score} {away_team}</t>")
 
 
+# @login_required
+# def check_scores_after_match(request):
+    # if request.user.is_superuser:
+    #     last_tour = Tour.objects.filter(is_active=False).last()
+    #     # finished_matches = Predict.objects.filter(match__tour=last_tour)
+    #     trues = TrueScore.objects.filter(match__tour=last_tour).\
+    #         values('match_id', 'home_score', 'away_score', 'home_prop_score', 'away_prop_score')
+    #
+    #     predicts = Predict.objects.filter(match__tour=last_tour).values('user', 'home_score', 'away_score')
+    #     results = [check_scores_and_rate(i) for i in trues]
+    #
+    #     preds = pd.DataFrame(data=predicts)
+    #     # df = pd.DataFrame(data=preds, columns=['home', 'away'])
+    #     new_arr = np.array([prop(np.array([x[2], x[3]])) for x in preds.itertuples()])
+    #     preds['prop_home'] = new_arr[:, 0]
+    #     preds['away_prop'] = new_arr[:, 1]
+    #     actual = trues
+    #     actual = np.array([3, 2])
+    #     proportion = actual - actual.min()
+    #     exact_match = preds[(preds.home == actual[0]) & (preds.away == actual[1])]
+    #     proportional_match = preds[(preds['prop_home'] == proportion[0]) & (preds['away_prop'] == proportion[1])]
+
+
+    # predicts = Predict.objects.filter(user=user)
+    # for predict in predicts:
+    #     if predict.match.is_finished:
+    #         predict.home_score = predict.match.home_score
+    #         predict.away_score = predict.match.away_score
+    #         predict.save()
+    # return HttpResponse('Thanks')
+
+
 @login_required
 def check_scores_after_match(request):
-    if request.user.is_superuser:
-        last_tour = Tour.objects.filter(is_active=False).last()
-        # finished_matches = Predict.objects.filter(match__tour=last_tour)
-        trues = TrueScore.objects.filter(match__tour=last_tour).\
-            values('match_id', 'home_score', 'away_score', 'home_prop_score', 'away_prop_score')
-
-        predicts = Predict.objects.filter(match__tour=last_tour).values('user', 'home_score', 'away_score')
-        results = [check_scores_and_rate(i) for i in trues]
-
-        preds = pd.DataFrame(data=predicts)
-        # df = pd.DataFrame(data=preds, columns=['home', 'away'])
-        new_arr = np.array([prop(np.array([x[2], x[3]])) for x in preds.itertuples()])
-        preds['prop_home'] = new_arr[:, 0]
-        preds['away_prop'] = new_arr[:, 1]
-        actual = trues
-        actual = np.array([3, 2])
-        proportion = actual - actual.min()
-        exact_match = preds[(preds.home == actual[0]) & (preds.away == actual[1])]
-        proportional_match = preds[(preds['prop_home'] == proportion[0]) & (preds['away_prop'] == proportion[1])]
-
-
-    predicts = Predict.objects.filter(user=user)
-    for predict in predicts:
-        if predict.match.is_finished:
-            predict.home_score = predict.match.home_score
-            predict.away_score = predict.match.away_score
-            predict.save()
+    uncounted_games = TrueScore.objects.filter(is_counted=False)
+    counter = 0
+    pred_count = 0
+    for game in uncounted_games:
+        res, count = check_scores_and_rate(game)
+        counter += 1
+        pred_count += count
+        # last_tour = Tour.objects.filter(is_active=False).last()
+        # finished_matches =
+    bot.send_message(chat_id=LOG_GROUP_ID, text=f"{counter} ta o'yindan {pred_count} ta taxmin hisoblandi")
     return HttpResponse('Thanks')
-
-
-@login_required
-def finished_games(request):
-    last_tour = Tour.objects.filter(is_active=False).last()
-    # finished_matches =

@@ -11,7 +11,7 @@ urlpatterns = [
     path('predict/', predict_receive, name='predict_receive'),
     path('edit/<int:predict_id>', edit, name='edit'),
     path('edit_predict/', edit_predict, name='edit_predict'),
-    path('finished-games/', finished_games, name='finished_games'),
+    # path('finished-games/', finished_games, name='finished_games'),
     path('check_preds/', check_scores_after_match, name='check_preds'),
 
 ]
